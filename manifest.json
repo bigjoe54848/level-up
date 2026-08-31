@@ -1,0 +1,14 @@
+{
+  "name": "Level Up",
+  "short_name": "Level Up",
+  "start_url": "/level-up/",
+  "scope": "/level-up/",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "/level-up/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}
