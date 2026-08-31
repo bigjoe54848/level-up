@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Level Up — 12 Week Training Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --field:#142B20;
+    --field-2:#1D3A2A;
+    --chalk:#F4EFE3;
+    --chalk-dim:#C9C2AE;
+    --line:#3A5A44;
+    --gold:#F2B441;
+    --gold-dim:#8a6a24;
+    --red:#E2593F;
+    --card:#FBF8F1;
+    --card-ink:#1A2A20;
+    --radius:10px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--field);
+    color:var(--chalk);
+    font-family:'Work Sans',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .display{font-family:'Anton',sans-serif; letter-spacing:0.01em;}
+
+  /* ---------- Hero ---------- */
+  header.hero{
+    padding:44px 20px 28px;
+    max-width:920px;
+    margin:0 auto;
+    text-align:left;
+    border-bottom:1px solid var(--line);
+  }
+  .hero-tag{
+    font-size:13px;
+    color:var(--gold);
+    text-transform:uppercase;
+    letter-spacing:0.14em;
+    margin-bottom:10px;
+    font-weight:600;
+  }
+  h1.display{
+    font-size:clamp(40px,8vw,72px);
+    line-height:0.95;
+    margin:0 0 14px;
+  }
+  .hero p.lede{
+    max-width:56ch;
+    font-size:17px;
+    line-height:1.55;
+    color:var(--chalk-dim);
+    margin:0 0 18px;
+  }
+  .note-box{
+    background:var(--field-2);
+    border-left:3px solid var(--gold);
+    padding:14px 16px;
+    border-radius:0 6px 6px 0;
+    max-width:64ch;
+    font-size:14.5px;
+    line-height:1.55;
+    color:var(--chalk-dim);
+  }
+  .note-box strong{color:var(--chalk);}
+
+  /* ---------- Controls ---------- */
+  .controls{
+    max-width:920px;
+    margin:0 auto;
+    padding:28px 20px 0;
+  }
+  .control-label{
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:0.12em;
+    color:var(--chalk-dim);
+    margin-bottom:10px;
+    font-weight:600;
+  }
+  .level-row{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin-bottom:22px;
+  }
+  .level-btn{
+    background:var(--field-2);
+    border:1px solid var(--line);
+    color:var(--chalk-dim);
+    border-radius:var(--radius);
+    padding:14px 10px;
+    cursor:pointer;
+    text-align:left;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .level-btn .num{
+    font-family:'Anton',sans-serif;
+    font-size:26px;
+    color:var(--gold-dim);
+    display:block;
+    line-height:1;
+    margin-bottom:4px;
+  }
+  .level-btn .lvl-name{font-size:13px; font-weight:600; color:inherit;}
+  .level-btn .lvl-weeks{font-size:11.5px; opacity:.8;}
+  .level-btn.active{
+    background:var(--gold);
+    border-color:var(--gold);
+    color:var(--field);
+  }
+  .level-btn.active .num{color:var(--field);}
+
+  .week-row{
+    display:flex;
+    gap:8px;
+    margin-bottom:22px;
+    flex-wrap:wrap;
+    align-items:center;
+  }
+  .week-pill{
+    width:40px;height:40px;
+    border-radius:50%;
+    border:1px solid var(--line);
+    background:var(--field-2);
+    color:var(--chalk-dim);
+    font-family:'Anton',sans-serif;
+    font-size:16px;
+    cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .week-pill.active{background:var(--chalk); color:var(--field); border-color:var(--chalk);}
+  .week-abs{font-size:13px; color:var(--chalk-dim); margin-left:6px;}
+
+  .day-row{
+    display:flex;
+    gap:6px;
+    overflow-x:auto;
+    padding-bottom:6px;
+    margin-bottom:8px;
+  }
+  .day-btn{
+    flex:0 0 auto;
+    background:transparent;
+    border:1px solid var(--line);
+    color:var(--chalk-dim);
+    padding:10px 16px;
+    border-radius:999px;
+    font-size:13.5px;
+    font-weight:600;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .day-btn.active{background:var(--red); border-color:var(--red); color:#fff;}
+
+  /* ---------- Content cards ---------- */
+  main{
+    max-width:920px;
+    margin:0 auto;
+    padding:24px 20px 70px;
+    display:grid;
+    grid-template-columns:1.15fr 0.85fr;
+    gap:18px;
+  }
+  @media (max-width:720px){
+    main{grid-template-columns:1fr;}
+    .level-row{grid-template-columns:1fr;}
+  }
+  .card{
+    background:var(--card);
+    color:var(--card-ink);
+    border-radius:14px;
+    padding:22px 22px 24px;
+  }
+  .card-kicker{
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:0.12em;
+    font-weight:700;
+    margin-bottom:4px;
+  }
+  .card.train .card-kicker{color:var(--red);}
+  .card.fuel .card-kicker{color:#3E7A4C;}
+  .card h2.display{
+    font-size:28px;
+    margin:0 0 16px;
+    line-height:1;
+  }
+  .ex{
+    padding:14px 0;
+    border-top:1px solid #E4DECE;
+  }
+  .ex:first-of-type{border-top:none; padding-top:0;}
+  .ex-name{font-weight:700; font-size:15.5px; margin-bottom:3px;}
+  .ex-cue{font-size:13.5px; color:#5a5142; line-height:1.5; margin-bottom:6px;}
+  .ex-reps{
+    display:inline-block;
+    background:var(--gold);
+    color:var(--field);
+    font-weight:700;
+    font-size:12.5px;
+    padding:4px 10px;
+    border-radius:999px;
+  }
+  .rest-note{font-size:13px; color:#5a5142; margin-top:14px; line-height:1.5;}
+
+  .meal-row{padding:13px 0; border-top:1px solid #E4DECE;}
+  .meal-row:first-of-type{border-top:none; padding-top:0;}
+  .meal-type{
+    font-size:11.5px;
+    text-transform:uppercase;
+    letter-spacing:0.1em;
+    font-weight:700;
+    color:#3E7A4C;
+    margin-bottom:3px;
+  }
+  .meal-text{font-size:14.5px; line-height:1.5;}
+
+  /* ---------- Extra sections ---------- */
+  section.extra{
+    max-width:920px;
+    margin:0 auto;
+    padding:0 20px 60px;
+  }
+  section.extra h3.display{font-size:26px; margin:0 0 14px;}
+  .tip-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+    margin-bottom:34px;
+  }
+  @media (max-width:600px){.tip-grid{grid-template-columns:1fr;}}
+  .tip{
+    background:var(--field-2);
+    border-radius:12px;
+    padding:16px 18px;
+    font-size:14px;
+    line-height:1.55;
+    color:var(--chalk-dim);
+  }
+  .tip strong{color:var(--chalk); display:block; margin-bottom:4px; font-size:14.5px;}
+
+  footer{
+    max-width:920px;
+    margin:0 auto;
+    padding:0 20px 50px;
+    font-size:13px;
+    color:var(--chalk-dim);
+    line-height:1.6;
+    border-top:1px solid var(--line);
+    padding-top:24px;
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-tag">12-Week Training Plan</div>
+  <h1 class="display">LEVEL UP.</h1>
+  <p class="lede">A three-month plan to get stronger, build a workout habit, and feel better in your body — starting from zero. No gym, no equipment you don't already have at home.</p>
+  <div class="note-box">
+    <strong>Before you start:</strong> Show this plan to a parent or guardian, and if possible check in with your doctor before starting — especially since you're still growing, it's smart to get the okay first. This plan is about getting stronger and building good habits, not about hitting a number on a scale.
+  </div>
+</header>
+
+<div class="controls">
+  <div class="control-label">Choose your level</div>
+  <div class="level-row" id="levelRow"></div>
+
+  <div class="control-label" id="weekLabel">Week</div>
+  <div class="week-row" id="weekRow"></div>
+
+  <div class="control-label">Day</div>
+  <div class="day-row" id="dayRow"></div>
+</div>
+
+<main>
+  <div class="card train">
+    <div class="card-kicker">Training</div>
+    <h2 class="display" id="trainTitle">Upper Body &amp; Core</h2>
+    <div id="exList"></div>
+  </div>
+  <div class="card fuel">
+    <div class="card-kicker">Fuel</div>
+    <h2 class="display" id="fuelTitle">Monday</h2>
+    <div id="mealList"></div>
+  </div>
+</main>
+
+<section class="extra">
+  <h3 class="display">How eating works on this plan</h3>
+  <div class="tip-grid">
+    <div class="tip"><strong>Build your plate</strong>Half the plate veggies or fruit, a quarter protein (chicken, eggs, beans, fish, tofu), a quarter whole grains or potatoes/rice. You don't need to measure anything — just aim for roughly that balance most meals.</div>
+    <div class="tip"><strong>Actually eat breakfast</strong>Skipping it usually means you're starving and snacking on whatever's fastest by 3pm. Toast with butter, a banana, and eggs — what you're already eating — keeps your energy steady and makes it way easier to make good choices later in the day.</div>
+    <div class="tip"><strong>Water over soda</strong>Swap sugary drinks for water most of the time. It's one of the easiest changes that actually moves the needle, and it's free.</div>
+    <div class="tip"><strong>Nothing is banned</strong>Pizza night, dessert, fries with friends — all fine. This plan is about what you eat <em>most</em> of the time, not perfect eating. Restricting foods completely usually backfires.</div>
+    <div class="tip"><strong>Sleep is part of the plan</strong>Aim for 8–10 hours. Your body builds strength and recovers while you sleep, especially during the growth spurts of your teens — it matters as much as the workouts do.</div>
+  </div>
+
+  <h3 class="display">Working with a freezer, not a fridge</h3>
+  <div class="tip-grid">
+    <div class="tip"><strong>Nuggets, pizza, and patties are fine</strong>They're not "bad" foods. The easiest upgrade isn't replacing them — it's adding a frozen veggie side (mixed veg, corn, peas — usually under $2 a bag and lasts forever) or a piece of fruit next to them.</div>
+    <div class="tip"><strong>How to just cook a steak</strong>Pat it dry, salt and pepper both sides. Pan on medium-high with a little oil, about 3–4 minutes a side for a normal-thickness steak (thinner = less time). It's done medium when it feels like the base of your thumb when you touch your thumb to your middle finger — firmer than that and it's overcooking. Let it sit 5 minutes before cutting. Cook extra so you've got leftovers for lunch.</div>
+    <div class="tip"><strong>Mozzarella sticks aren't a full meal</strong>They're better as a snack or a side than as dinner by themselves — pair a few with something else, like nuggets or a sandwich.</div>
+    <div class="tip"><strong>A short list to ask your parents for</strong>Bread, butter, bananas, and eggs — sounds like you've usually got these, so just keeping them stocked covers breakfast. Everything else — dinners especially — you can already build from rice, frozen veggies, and what's in the freezer.</div>
+  </div>
+
+  <h3 class="display">How the training works</h3>
+  <div class="tip-grid">
+    <div class="tip"><strong>Rest between sets</strong>Take 45–60 seconds to catch your breath between each exercise in a round. This isn't a race.</div>
+    <div class="tip"><strong>Form over reps</strong>A smaller, controlled movement beats a sloppy full-range one. If your form breaks down, that's your real rep count for the day — stop there.</div>
+    <div class="tip"><strong>Some soreness is normal</strong>Feeling it in your muscles a day or two after a new workout is normal. Sharp pain in a joint is not — back off and rest if that happens, and tell an adult if it doesn't go away.</div>
+    <div class="tip"><strong>Missed a day? No big deal</strong>Just pick the plan back up on the next day — don't try to double up to "catch up." Consistency over weeks beats any single workout.</div>
+  </div>
+</section>
+
+<footer>
+  This is a general training and habit guide, not medical or nutrition advice tailored to you individually. Talk to a parent/guardian and a doctor before starting, particularly about what's an appropriate pace of change for you while you're still growing.
+</footer>
+
+<script>
+const DAYS = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+const DAY_NAMES = {Mon:"Monday",Tue:"Tuesday",Wed:"Wednesday",Thu:"Thursday",Fri:"Friday",Sat:"Saturday",Sun:"Sunday"};
+
+const PLAN = {
+  1:{
+    label:"LEVEL 1", name:"Foundation", weeksRange:"Weeks 1–4",
+    days:{
+      Mon:{focus:"Upper Body & Core", exercises:[
+        {name:"Wall Push-ups", cue:"Stand about arm's length from a wall, hands flat at shoulder height, lower your chest toward the wall and push back.", weeks:["2 rounds × 8 reps","2 rounds × 10 reps","3 rounds × 10 reps","3 rounds × 12 reps"]},
+        {name:"High Incline Push-ups", cue:"Hands on a couch seat or sturdy table edge, feet back, lower your chest toward your hands.", weeks:["2 rounds × 5 reps","2 rounds × 6 reps","3 rounds × 6 reps","3 rounds × 8 reps"]},
+        {name:"Standing Overhead Press", cue:"Hold a full water bottle or a light backpack in each hand, press up overhead and lower slowly.", weeks:["2 rounds × 10 reps","2 rounds × 12 reps","3 rounds × 10 reps","3 rounds × 12 reps"]},
+        {name:"Bird-Dog", cue:"On hands and knees, reach one arm forward and the opposite leg back, hold, then switch sides.", weeks:["2 rounds × 6/side","2 rounds × 8/side","3 rounds × 8/side","3 rounds × 10/side"]},
+        {name:"Dead Bug", cue:"Lie on your back, arms up, knees bent at 90°. Slowly lower opposite arm and leg toward the floor, then return.", weeks:["2 rounds × 6/side","2 rounds × 8/side","3 rounds × 8/side","3 rounds × 10/side"]}
+      ]},
+      Tue:{focus:"Cardio — Walk &amp; Jog", exercises:[
+        {name:"Walk with Jog Bursts", cue:"Walk at a brisk pace and mix in short easy jogs when you feel ready — outside, on a treadmill, or even around the block.", weeks:["15 min walk + 4×20-sec light jogs","18 min walk + 5×20-sec jogs","20 min walk + 6×30-sec jogs","20 min walk + 6×40-sec jogs"]}
+      ]},
+      Wed:{focus:"Lower Body", exercises:[
+        {name:"Chair-Assisted Squats", cue:"Stand in front of a chair, lower down like you're going to sit, tap the seat lightly, and stand back up.", weeks:["2 rounds × 10 reps","2 rounds × 12 reps","3 rounds × 10 reps","3 rounds × 12 reps"]},
+        {name:"Glute Bridges", cue:"Lie on your back, knees bent, feet flat. Push hips up toward the ceiling, squeeze, and lower.", weeks:["2 rounds × 10 reps","2 rounds × 12 reps","3 rounds × 12 reps","3 rounds × 15 reps"]},
+        {name:"Standing Calf Raises", cue:"Rise up onto your toes, hold a beat, lower slowly. Hold a wall or chair for balance if needed.", weeks:["2 rounds × 12 reps","2 rounds × 15 reps","3 rounds × 15 reps","3 rounds × 18 reps"]},
+        {name:"Step-ups", cue:"Use a sturdy step or bottom stair. Step up with one foot, bring the other up to meet it, then step back down.", weeks:["2 rounds × 6/side","2 rounds × 8/side","3 rounds × 8/side","3 rounds × 10/side"]},
+        {name:"Wall Sit", cue:"Back flat against a wall, slide down until knees are bent, hold the position like sitting in an invisible chair.", weeks:["2 rounds × 15 sec","2 rounds × 20 sec","3 rounds × 20 sec","3 rounds × 25 sec"]}
+      ]},
+      Thu:{focus:"Active Recovery", exercises:[
+        {name:"Mobility &amp; Stretch Flow", cue:"An easy walk followed by slow, gentle stretches for your legs, chest, and back. Nothing should hurt — just loosen up.", weeks:["10 min walk + stretch","12 min walk + stretch","15 min walk + stretch","15 min walk + stretch"]}
+      ]},
+      Fri:{focus:"Full Body Circuit", exercises:[
+        {name:"High Incline Push-ups", cue:"Same setup as Monday — hands elevated on a couch or table edge.", weeks:["2 rounds × 6 reps","2 rounds × 8 reps","3 rounds × 8 reps","3 rounds × 10 reps"]},
+        {name:"Bodyweight Squats", cue:"Feet shoulder-width apart, sit your hips back and down, keep your chest up, then stand.", weeks:["2 rounds × 10 reps","2 rounds × 12 reps","3 rounds × 12 reps","3 rounds × 15 reps"]},
+        {name:"Standing Marches", cue:"Standing tall, lift alternating knees up toward your chest at a steady pace.", weeks:["2 rounds × 20 reps","2 rounds × 24 reps","3 rounds × 24 reps","3 rounds × 30 reps"]},
+        {name:"Glute Bridges", cue:"Same as Wednesday — squeeze at the top.", weeks:["2 rounds × 10 reps","2 rounds × 12 reps","3 rounds × 12 reps","3 rounds × 15 reps"]},
+        {name:"Knee Plank Hold", cue:"Forearms and knees on the floor, body in a straight line from head to knees, brace your core.", weeks:["2 rounds × 15 sec","2 rounds × 20 sec","3 rounds × 20 sec","3 rounds × 25 sec"]}
+      ]},
+      Sat:{focus:"Cardio / Play", exercises:[
+        {name:"Active Play", cue:"Pick something you actually enjoy — basketball, biking, swimming, tag with friends. It counts as much as any workout.", weeks:["20 min","25 min","25–30 min","30 min"]}
+      ]},
+      Sun:{focus:"Rest Day", exercises:[
+        {name:"Full Rest", cue:"Your body rebuilds and gets stronger on rest days — this is part of the plan, not a break from it.", weeks:["Rest","Rest","Rest","Rest"]}
+      ]}
+    }
+  },
+  2:{
+    label:"LEVEL 2", name:"Building", weeksRange:"Weeks 5–8",
+    days:{
+      Mon:{focus:"Upper Body & Core", exercises:[
+        {name:"Low Incline Push-ups", cue:"Hands on a lower surface than Level 1 — a chair seat or coffee table. Lower your chest toward your hands.", weeks:["2 rounds × 8 reps","2 rounds × 10 reps","3 rounds × 10 reps","3 rounds × 12 reps"]},
+        {name:"Knee Push-ups", cue:"Hands under shoulders, knees on the floor, lower your chest toward the ground and push back up.", weeks:["2 rounds × 5 reps","2 rounds × 6 reps","3 rounds × 6 reps","3 rounds × 8 reps"]},
+        {name:"Superman", cue:"Lie face down, lift your arms, chest, and legs slightly off the floor at the same time, hold, then lower.", weeks:["2 rounds × 8 reps","2 rounds × 10 reps","3 rounds × 10 reps","3 rounds × 12 reps"]},
+        {name:"Side Plank (knee down)", cue:"Lie on your side, prop up on one forearm with your bottom knee bent on the floor for support, lift your hips.", weeks:["2 rounds × 12 sec/side","2 rounds × 15 sec/side","3 rounds × 15 sec/side","3 rounds × 20 sec/side"]},
+        {name:"Bicycle Crunches", cue:"Lying on your back, alternate bringing elbow to opposite knee in a slow pedaling motion.", weeks:["2 rounds × 10/side","2 rounds × 12/side","3 rounds × 12/side","3 rounds × 15/side"]}
+      ]},
+      Tue:{focus:"Cardio — Jog Intervals", exercises:[
+        {name:"Walk-Jog Intervals", cue:"Alternate jogging and walking. Push the jog portions a bit further each week.", weeks:["20 min: 1 min jog / 2 min walk","20 min: 1 min jog / 90 sec walk","22 min: 1.5 min jog / 90 sec walk","22 min: 2 min jog / 1 min walk"]}
+      ]},
+      Wed:{focus:"Lower Body", exercises:[
+        {name:"Bodyweight Squats", cue:"No chair needed now — full range, chest up, sit hips back.", weeks:["2 rounds × 12 reps","2 rounds × 15 reps","3 rounds × 12 reps","3 rounds × 15 reps"]},
+        {name:"Reverse Lunges", cue:"Step one foot back, lower your back knee toward the floor, push through your front foot to return.", weeks:["2 rounds × 6/side","2 rounds × 8/side","3 rounds × 8/side","3 rounds × 10/side"]},
+        {name:"Single-Leg Glute Bridge", cue:"Same as a glute bridge, but extend one leg straight — push through the other heel to lift your hips.", weeks:["2 rounds × 6/side","2 rounds × 8/side","3 rounds × 8/side","3 rounds × 10/side"]},
+        {name:"Calf Raises", cue:"Rise onto your toes and lower slowly — try without holding on for balance this time.", weeks:["2 rounds × 15 reps","2 rounds × 18 reps","3 rounds × 15 reps","3 rounds × 18 reps"]},
+        {name:"Wall Sit", cue:"Same as Level 1 — hold a bit longer each week.", weeks:["2 rounds × 25 sec","2 rounds × 30 sec","3 rounds × 25 sec","3 rounds × 30 sec"]}
+      ]},
+      Thu:{focus:"Active Recovery", exercises:[
+        {name:"Mobility &amp; Stretch Flow", cue:"Easy walk or light bike, then a full stretch — hips, hamstrings, shoulders, chest.", weeks:["15 min + stretch","15 min + stretch","18 min + stretch","18 min + stretch"]}
+      ]},
+      Fri:{focus:"Full Body Circuit", exercises:[
+        {name:"Knee Push-ups", cue:"Same as Monday's version.", weeks:["2 rounds × 6 reps","2 rounds × 8 reps","3 rounds × 8 reps","3 rounds × 10 reps"]},
+        {name:"Reverse Lunges", cue:"Same as Wednesday.", weeks:["2 rounds × 6/side","2 rounds × 8/side","3 rounds × 8/side","3 rounds × 10/side"]},
+        {name:"Modified Mountain Climbers", cue:"Hands on a raised surface (couch/table), step knees toward your chest one at a time at a controlled pace.", weeks:["2 rounds × 16 total","2 rounds × 20 total","3 rounds × 20 total","3 rounds × 24 total"]},
+        {name:"Glute Bridges", cue:"Standard version, squeeze at the top.", weeks:["2 rounds × 12 reps","2 rounds × 15 reps","3 rounds × 15 reps","3 rounds × 18 reps"]},
+        {name:"Plank Hold", cue:"Forearms on the floor, knees up this time, straight line from head to heels.", weeks:["2 rounds × 15 sec","2 rounds × 20 sec","3 rounds × 20 sec","3 rounds × 25 sec"]}
+      ]},
+      Sat:{focus:"Cardio / Play", exercises:[
+        {name:"Active Play", cue:"Same idea as Level 1 — anything that gets you moving and that you enjoy.", weeks:["25 min","25 min","30 min","30 min"]}
+      ]},
+      Sun:{focus:"Rest Day", exercises:[
+        {name:"Full Rest", cue:"Keep resting fully one day a week — recovery is when the progress actually sets in.", weeks:["Rest","Rest","Rest","Rest"]}
+      ]}
+    }
+  },
+  3:{
+    label:"LEVEL 3", name:"Leveling Up", weeksRange:"Weeks 9–12",
+    days:{
+      Mon:{focus:"Upper Body & Core", exercises:[
+        {name:"Push-up Attempts", cue:"Hands under shoulders, full plank, lower all the way and push up. Do as many good ones as you can, then finish the set with knee push-ups.", weeks:["2 rounds: attempt + knee push-ups to 6 total","2 rounds: attempt + knee push-ups to 8 total","3 rounds: attempt + knee push-ups to 8 total","3 rounds: attempt + knee push-ups to 10 total"]},
+        {name:"Knee Push-ups", cue:"Your finisher set — keep form clean even as you get tired.", weeks:["2 rounds × 8 reps","2 rounds × 10 reps","3 rounds × 10 reps","3 rounds × 12 reps"]},
+        {name:"Side Plank (feet stacked)", cue:"Full side plank — feet stacked, only forearm and feet touching the floor, hips lifted.", weeks:["2 rounds × 15 sec/side","2 rounds × 20 sec/side","3 rounds × 20 sec/side","3 rounds × 25 sec/side"]},
+        {name:"Superman", cue:"Same as Level 2 — hold a beat longer at the top each week.", weeks:["2 rounds × 10 reps","2 rounds × 12 reps","3 rounds × 12 reps","3 rounds × 15 reps"]},
+        {name:"Bicycle Crunches", cue:"Keep the pace controlled, not rushed.", weeks:["2 rounds × 14/side","2 rounds × 16/side","3 rounds × 14/side","3 rounds × 16/side"]}
+      ]},
+      Tue:{focus:"Cardio — Jog Intervals", exercises:[
+        {name:"Walk-Jog Intervals", cue:"Keep pushing the jog portions a bit further — you should finish tired but not wiped out.", weeks:["22 min: 2 min jog / 1 min walk","22 min: 3 min jog / 1 min walk","25 min: 3 min jog / 1 min walk","25 min: 4 min jog / 1 min walk"]}
+      ]},
+      Wed:{focus:"Lower Body", exercises:[
+        {name:"Bodyweight Squats", cue:"Full range, controlled tempo.", weeks:["3 rounds × 15 reps","3 rounds × 18 reps","3 rounds × 20 reps","3 rounds × 20 reps"]},
+        {name:"Bulgarian Split Squat", cue:"Rear foot up on a chair behind you, front leg does the work lowering and pressing back up.", weeks:["2 rounds × 6/side","2 rounds × 8/side","3 rounds × 8/side","3 rounds × 10/side"]},
+        {name:"Reverse Lunges", cue:"Same movement, push for a bit more control and depth each week.", weeks:["2 rounds × 10/side","2 rounds × 12/side","3 rounds × 10/side","3 rounds × 12/side"]},
+        {name:"Single-Leg Glute Bridge", cue:"Same as Level 2, keep hips level throughout.", weeks:["2 rounds × 10/side","2 rounds × 12/side","3 rounds × 10/side","3 rounds × 12/side"]},
+        {name:"Wall Sit", cue:"Push your hold time — this is a good one to track over the weeks.", weeks:["2 rounds × 30 sec","2 rounds × 35 sec","3 rounds × 30 sec","3 rounds × 35 sec"]}
+      ]},
+      Thu:{focus:"Active Recovery", exercises:[
+        {name:"Mobility &amp; Stretch Flow", cue:"Easy movement plus a full stretch routine — this stays easy on purpose, even as everything else gets harder.", weeks:["18 min + stretch","18 min + stretch","20 min + stretch","20 min + stretch"]}
+      ]},
+      Fri:{focus:"Full Body Circuit (timed rounds)", exercises:[
+        {name:"Push-up Attempts + Knee Finishers", cue:"Same as Monday's approach — attempt full push-ups, finish reps on your knees.", weeks:["3 rounds to 8 total","3 rounds to 10 total","3 rounds to 10 total","3 rounds to 12 total"]},
+        {name:"Bodyweight Squats", cue:"Keep pace steady through the circuit.", weeks:["3 rounds × 12 reps","3 rounds × 15 reps","3 rounds × 15 reps","3 rounds × 15 reps"]},
+        {name:"Mountain Climbers", cue:"Full version now — hands on the floor, plank position, drive knees toward chest at a controlled quick pace.", weeks:["3 rounds × 20 total","3 rounds × 24 total","3 rounds × 24 total","3 rounds × 30 total"]},
+        {name:"Reverse Lunges", cue:"Same movement as Wednesday.", weeks:["3 rounds × 8/side","3 rounds × 10/side","3 rounds × 10/side","3 rounds × 10/side"]},
+        {name:"Plank Hold", cue:"Full plank on toes if you can, knees down if you need to.", weeks:["2 rounds × 25 sec","2 rounds × 30 sec","3 rounds × 25 sec","3 rounds × 30 sec"]}
+      ]},
+      Sat:{focus:"Cardio / Play", exercises:[
+        {name:"Active Play", cue:"Same idea — keep it something you actually want to do.", weeks:["30 min","30 min","30–35 min","35 min"]}
+      ]},
+      Sun:{focus:"Rest Day", exercises:[
+        {name:"Full Rest", cue:"You made it through another week — rest fully and be proud of the consistency, not just the reps.", weeks:["Rest","Rest","Rest","Rest"]}
+      ]}
+    }
+  }
+};
+
+const MEALS = {
+  Mon:{breakfast:"Toast with butter and a banana.", lunch:"Nuggets with rice, or a sandwich — whichever's quickest.", dinner:"Frozen chicken nuggets + rice + a frozen veggie side, microwaved or steamed.", snack:"2–3 mozzarella sticks, baked or air-fried, not straight from the freezer."},
+  Tue:{breakfast:"Eggs and toast with butter.", lunch:"Sandwich, or leftover steak and rice if you cooked extra steak recently.", dinner:"Frozen pizza — throw a bag of frozen veggies in the microwave as a side.", snack:"Handful of crackers or pretzels."},
+  Wed:{breakfast:"Toast with butter and a banana.", lunch:"Sandwich or nuggets — pizza doesn't reheat great, so make something fresh.", dinner:"Cook a steak (see the how-to tip below) over rice, with frozen veggies on the side. Cook an extra one if you want lunch covered tomorrow.", snack:"Mozzarella sticks or crackers."},
+  Thu:{breakfast:"Eggs, toast with butter, and a banana.", lunch:"Leftover steak and rice from Wednesday if you cooked extra, or nuggets.", dinner:"Burger patties on bread or a bun, rice or chips on the side.", snack:"Crackers or whatever's around."},
+  Fri:{breakfast:"Toast with butter and a banana — quick and no cooking.", lunch:"Sandwich or nuggets.", dinner:"Pizza or nugget night, with a frozen veggie side.", snack:"Popcorn if you have it, or mozzarella sticks."},
+  Sat:{breakfast:"Eggs and toast with butter, plus a banana.", lunch:"Whatever's around.", dinner:"Cook another steak over rice with veggies, or family dinner — whatever's happening at home.", snack:"Whatever snack you've got."},
+  Sun:{breakfast:"Toast with butter and a banana.", lunch:"Whatever's around.", dinner:"Cook more steak with rice and veggies, and make extra if you want it for lunch tomorrow.", snack:"Whatever's around."}
+};
+
+let state = {level:1, week:1, day:"Mon"};
+
+function renderLevels(){
+  const row = document.getElementById('levelRow');
+  row.innerHTML = "";
+  [1,2,3].forEach(lv=>{
+    const p = PLAN[lv];
+    const btn = document.createElement('button');
+    btn.className = 'level-btn' + (state.level===lv ? ' active' : '');
+    btn.innerHTML = `<span class="num display">${lv}</span><span class="lvl-name">${p.name}</span><br><span class="lvl-weeks">${p.weeksRange}</span>`;
+    btn.onclick = ()=>{ state.level=lv; state.week=1; renderAll(); };
+    row.appendChild(btn);
+  });
+}
+
+function renderWeeks(){
+  const row = document.getElementById('weekRow');
+  row.innerHTML = "";
+  for(let w=1; w<=4; w++){
+    const btn = document.createElement('button');
+    btn.className = 'week-pill' + (state.week===w ? ' active' : '');
+    btn.textContent = w;
+    btn.onclick = ()=>{ state.week=w; renderAll(); };
+    row.appendChild(btn);
+  }
+  const absWeek = (state.level-1)*4 + state.week;
+  document.getElementById('weekLabel').textContent = `Week ${state.week} of this level`;
+  const abs = document.createElement('span');
+  abs.className='week-abs';
+  abs.textContent = `Overall: week ${absWeek} of 12`;
+  row.appendChild(abs);
+}
+
+function renderDays(){
+  const row = document.getElementById('dayRow');
+  row.innerHTML = "";
+  DAYS.forEach(d=>{
+    const btn = document.createElement('button');
+    btn.className = 'day-btn' + (state.day===d ? ' active' : '');
+    btn.textContent = d;
+    btn.onclick = ()=>{ state.day=d; renderContent(); highlightDay(); };
+    row.appendChild(btn);
+  });
+}
+function highlightDay(){
+  document.querySelectorAll('.day-btn').forEach(b=>{
+    b.classList.toggle('active', b.textContent===state.day);
+  });
+}
+
+function renderContent(){
+  const dayPlan = PLAN[state.level].days[state.day];
+  document.getElementById('trainTitle').innerHTML = dayPlan.focus;
+  const list = document.getElementById('exList');
+  list.innerHTML = "";
+  dayPlan.exercises.forEach(ex=>{
+    const div = document.createElement('div');
+    div.className = 'ex';
+    div.innerHTML = `<div class="ex-name">${ex.name}</div><div class="ex-cue">${ex.cue}</div><span class="ex-reps">${ex.weeks[state.week-1]}</span>`;
+    list.appendChild(div);
+  });
+
+  document.getElementById('fuelTitle').textContent = DAY_NAMES[state.day];
+  const meal = MEALS[state.day];
+  const mlist = document.getElementById('mealList');
+  mlist.innerHTML = "";
+  [["Breakfast",meal.breakfast],["Lunch",meal.lunch],["Dinner",meal.dinner],["Snack",meal.snack]].forEach(([label,text])=>{
+    const div = document.createElement('div');
+    div.className = 'meal-row';
+    div.innerHTML = `<div class="meal-type">${label}</div><div class="meal-text">${text}</div>`;
+    mlist.appendChild(div);
+  });
+}
+
+function renderAll(){
+  renderLevels();
+  renderWeeks();
+  renderDays();
+  renderContent();
+}
+renderAll();
+</script>
+</body>
+</html>
